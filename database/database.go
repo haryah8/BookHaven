@@ -23,7 +23,7 @@ func InitDB(logger *logrus.Logger) {
 	if err != nil {
 		logger.Fatal("FAILED PING DATABASE ", err)
 	}
-	logger.Println("SUCCESS LOAD DATABASE")
+	logger.Info("SUCCESS LOAD DATABASE")
 }
 
 func GetDB() *sql.DB {
