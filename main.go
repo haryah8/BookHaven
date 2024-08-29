@@ -41,12 +41,13 @@ func main() {
 	user.POST("/book/borrow", handler.BorrowBook(db, logger))
 	user.POST("/book/return", handler.ReturnBook(db, logger))
 	user.GET("/book/check", handler.GetBorrowedBooks(db, logger))
-	var port string
-	if config.PORT == "" {
-		port = fmt.Sprintf(":%s", config.PORT)
-	} else {
+
+	port := fmt.Sprintf(":%s", config.PORT)
+	if port == "" || port == ":" {
 		port = ":8085"
 	}
+	// Start server
+	e.Start(port)
 
 	e.Start(port)
 
