@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   models.BookDto:
     properties:
@@ -84,9 +85,14 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: hkkoostanto@students.hacktiv8.ac.id
+    name: Harya Kumuda
+  description: BookHaven Library - Travel around the world with books.
+  title: BookHaven API
+  version: "1.0"
 paths:
-  /book:
+  /books:
     get:
       description: Retrieves details of all books including title, author, published
         year, ISBN, and available copies.
@@ -175,7 +181,7 @@ paths:
             type: object
       summary: Register a new user
       tags:
-      - User
+      - Login Register
   /user/balance:
     get:
       consumes:
@@ -208,6 +214,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - JWT: []
       summary: Get User Balance
       tags:
       - User
@@ -251,9 +259,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - JWT: []
       summary: Borrow a Book
       tags:
-      - Books
+      - User
   /user/book/check:
     get:
       consumes:
@@ -278,9 +288,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - JWT: []
       summary: Get Borrowed Books
       tags:
-      - Books
+      - User
   /user/book/return:
     post:
       consumes:
@@ -318,6 +330,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - JWT: []
       summary: Return a borrowed book
       tags:
       - User
@@ -355,7 +369,14 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - JWT: []
       summary: Top Up User Account
       tags:
       - User
+securityDefinitions:
+  JWT:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

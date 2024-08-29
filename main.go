@@ -16,6 +16,15 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+// @title BookHaven API
+// @version 1.0
+// @description BookHaven Library - Travel around the world with books.
+// @contact.name Harya Kumuda
+// @contact.email hkkoostanto@students.hacktiv8.ac.id
+// @BasePath /
+// @securityDefinitions.apikey JWT
+// @in header
+// @name Authorization
 func main() {
 	logger := logger.InitLogger()
 	config.InitConfig(logger)

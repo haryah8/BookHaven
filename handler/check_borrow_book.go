@@ -13,9 +13,10 @@ import (
 // GetBorrowedBooks retrieves the list of books currently borrowed by the authenticated user.
 // @Summary Get Borrowed Books
 // @Description Retrieves the list of books that the user is currently borrowing. The user must be authenticated. Handles errors such as database errors and user authentication issues.
-// @Tags Books
+// @Tags User
 // @Accept json
 // @Produce json
+// @Security JWT
 // @Success 200 {array} models.BorrowedBookResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Failure 500 {object} models.ErrorResponse

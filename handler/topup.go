@@ -23,6 +23,7 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security JWT
 // @Param topUpRequest body models.TopUpRequestDto true "Top Up Request Data"
 // @Success 200 {object} models.TopUpResponseXenditDto
 // @Failure 400 {object} models.TopUpErrorResponseXenditDto

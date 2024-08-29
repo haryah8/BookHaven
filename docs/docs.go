@@ -9,13 +9,16 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Harya Kumuda",
+            "email": "hkkoostanto@students.hacktiv8.ac.id"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/book": {
+        "/books": {
             "get": {
                 "description": "Retrieves details of all books including title, author, published year, ISBN, and available copies.",
                 "produces": [
@@ -106,7 +109,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Login Register"
                 ],
                 "summary": "Register a new user",
                 "parameters": [
@@ -153,6 +156,11 @@ const docTemplate = `{
         },
         "/user/balance": {
             "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Retrieves the balance of the user from the database. The user must be authenticated, and the function handles errors such as user not found or database errors.",
                 "consumes": [
                     "application/json"
@@ -203,6 +211,11 @@ const docTemplate = `{
         },
         "/user/book/borrow": {
             "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Allows an authenticated user to borrow a book. The user must have a balance of at least 50,000 and cannot exceed the borrowing limit of 3 books. Handles errors such as insufficient balance, exceeding borrowing limit, or book availability issues.",
                 "consumes": [
                     "application/json"
@@ -211,7 +224,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "User"
                 ],
                 "summary": "Borrow a Book",
                 "parameters": [
@@ -264,6 +277,11 @@ const docTemplate = `{
         },
         "/user/book/check": {
             "get": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Retrieves the list of books that the user is currently borrowing. The user must be authenticated. Handles errors such as database errors and user authentication issues.",
                 "consumes": [
                     "application/json"
@@ -272,7 +290,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "User"
                 ],
                 "summary": "Get Borrowed Books",
                 "responses": {
@@ -302,6 +320,11 @@ const docTemplate = `{
         },
         "/user/book/return": {
             "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Returns a borrowed book and calculates any late fees. If the book is returned after the allowed period, the user will be charged a late fee. The user must have sufficient balance to cover the late fee.",
                 "consumes": [
                     "application/json"
@@ -360,6 +383,11 @@ const docTemplate = `{
         },
         "/user/topup": {
             "post": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
                 "description": "Generates an invoice for top-up using Xendit. The user must be authenticated, and the API request includes the amount to top up. The function handles errors, processes the Xendit response, and updates the transaction history in the database.",
                 "consumes": [
                     "application/json"
@@ -541,17 +569,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "BookHaven API",
+	Description:      "BookHaven Library - Travel around the world with books.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

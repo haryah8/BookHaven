@@ -23,6 +23,7 @@ const (
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security JWT
 // @Param returnBookDto body models.ReturnBookDto true "Return Book Data"
 // @Success 200 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse

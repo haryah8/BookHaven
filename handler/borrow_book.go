@@ -15,8 +15,9 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security JWT
 // @Param body body models.BorrowBookDto true "Borrow Book Request"
-// @Success 200 {object} map[string]string
+// @Success 200 {object} models.ErrorSuccess
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Failure 403 {object} models.ErrorResponse

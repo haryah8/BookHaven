@@ -15,6 +15,7 @@ import (
 // @Tags User
 // @Accept json
 // @Produce json
+// @Security JWT
 // @Success 200 {object} map[string]int
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
