@@ -45,3 +45,7 @@ type BorrowedBookResponse struct {
 	ISBN       string    `json:"isbn"`
 	BorrowedAt time.Time `json:"borrowed_at"`
 }
+
+type JokeDto struct {
+	Joke string `json:"joke"`
+}

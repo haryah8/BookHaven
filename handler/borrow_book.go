@@ -17,7 +17,7 @@ import (
 // @Produce json
 // @Security JWT
 // @Param body body models.BorrowBookDto true "Borrow Book Request"
-// @Success 200 {object} models.ErrorSuccess
+// @Success 200 {object} models.ErrorResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Failure 401 {object} models.ErrorResponse
 // @Failure 403 {object} models.ErrorResponse

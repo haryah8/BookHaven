@@ -36,6 +36,11 @@ definitions:
       status:
         type: string
     type: object
+  models.JokeDto:
+    properties:
+      joke:
+        type: string
+    type: object
   models.LoginDto:
     properties:
       email:
@@ -94,8 +99,7 @@ info:
 paths:
   /books:
     get:
-      description: Retrieves details of all books including title, author, published
-        year, ISBN, and available copies.
+      description: Jokes to brighten your day :D.
       produces:
       - application/json
       responses:
@@ -103,15 +107,15 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.BookDto'
+              $ref: '#/definitions/models.JokeDto'
             type: array
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ErrorResponse'
-      summary: Get All Books
+      summary: Papa's Joke
       tags:
-      - Books
+      - Welcome
   /login:
     post:
       consumes:
@@ -240,9 +244,7 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.ErrorResponse'
         "400":
           description: Bad Request
           schema:

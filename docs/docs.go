@@ -20,21 +20,21 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
-                "description": "Retrieves details of all books including title, author, published year, ISBN, and available copies.",
+                "description": "Jokes to brighten your day :D.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Books"
+                    "Welcome"
                 ],
-                "summary": "Get All Books",
+                "summary": "Papa's Joke",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.BookDto"
+                                "$ref": "#/definitions/models.JokeDto"
                             }
                         }
                     },
@@ -242,10 +242,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/models.ErrorResponse"
                         }
                     },
                     "400": {
@@ -492,6 +489,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.JokeDto": {
+            "type": "object",
+            "properties": {
+                "joke": {
                     "type": "string"
                 }
             }

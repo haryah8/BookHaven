@@ -16,10 +16,11 @@ var DB_PASS string
 var PORT string
 var XENDIT_SECRET_KEY string
 var SECRET_KEY string
+var NINJA_API_KEY string
 
 func InitConfig(logger *logrus.Logger) {
 
-	err := godotenv.Load(".env")
+	err := godotenv.Load("config/.env")
 	if err != nil {
 		logger.Fatal("FAILED LOAD CONFIG", err)
 	}
@@ -31,6 +32,7 @@ func InitConfig(logger *logrus.Logger) {
 	DB_PASS = os.Getenv("DB_PASS")
 	PORT = os.Getenv("PORT")
 	XENDIT_SECRET_KEY = os.Getenv("XENDIT_SECRET_KEY")
+	NINJA_API_KEY = os.Getenv("NINJA_API_KEY")
 	SECRET_KEY = os.Getenv("SECRET_KEY")
 
 	logger.Info("SUCCESS LOAD CONFIG")
