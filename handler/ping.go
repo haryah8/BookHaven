@@ -3,6 +3,7 @@ package handler
 import (
 	"BookHaven/models"
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -39,5 +40,6 @@ func ProtectedEndpoint(c echo.Context) error {
 		"status":  "Success",
 		"message": "Access granted",
 		"user":    claims.Email,
+		"id":      fmt.Sprintf("%d", claims.UserId),
 	})
 }

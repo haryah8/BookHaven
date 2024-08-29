@@ -25,7 +25,8 @@ func Login(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 		}
 
 		var storedPasswordHash string
-		err := db.QueryRow(`SELECT password_hash FROM users WHERE email = ?`, req.Email).Scan(&storedPasswordHash)
+		var userId int
+		err := db.QueryRow(`SELECT password_hash, id FROM users WHERE email = ?`, req.Email).Scan(&storedPasswordHash, &userId)
 		if err != nil {
 			if err == sql.ErrNoRows {
 
@@ -52,8 +53,9 @@ func Login(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 			})
 		}
 
+		fmt.Println(userId) // DEBUGGING --------------------------------------------
 		// Generate JWT token
-		token, err := utils.GenerateToken(req.Email)
+		token, err := utils.GenerateToken(req.Email, userId)
 		if err != nil {
 			logger.Error("Error generating token: ", err)
 			return c.JSON(http.StatusInternalServerError, map[string]string{

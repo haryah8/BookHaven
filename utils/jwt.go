@@ -3,6 +3,7 @@ package utils
 import (
 	"BookHaven/config"
 	"BookHaven/models"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -14,9 +15,10 @@ var jwtKey = []byte(config.SECRET_KEY) // Change this to a secure key
 // Claims struct to define the payload of the JWT
 
 // GenerateToken generates a JWT token for a given user ID
-func GenerateToken(email string) (string, error) {
+func GenerateToken(email string, id int) (string, error) {
 	claims := models.Claims{
-		Email: email,
+		UserId: id,
+		Email:  email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 			Issuer:    "harya",
@@ -39,6 +41,8 @@ func ValidateToken(tokenStr string) (*models.Claims, error) {
 	}
 
 	if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
+		fmt.Println(claims.UserId)
+		fmt.Println(claims.Email)
 		return claims, nil
 	}
 

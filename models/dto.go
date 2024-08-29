@@ -11,3 +11,12 @@ type LoginDto struct {
 	Email    string `json:"email"` // User email address
 	Password string `json:"password"`
 }
+
+type TopUpRequestDto struct {
+	Amount uint `json:"amount"`
+}
+
+type ErrorResponseDto struct {
+	Error   string `json:"error"`
+	Message string `json:"message"`
+}

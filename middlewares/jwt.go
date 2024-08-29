@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"BookHaven/utils"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -37,7 +38,7 @@ func JWT(logger *logrus.Logger) echo.MiddlewareFunc {
 					"message": "Invalid token",
 				})
 			}
-
+			fmt.Println(claims.UserId)
 			// Attach the claims to the context
 			c.Set("user", claims)
 			return next(c)
