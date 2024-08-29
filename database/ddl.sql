@@ -42,12 +42,7 @@ CREATE TABLE
     CONSTRAINT fk_transactions_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
   );
 
-UPDATE borrowings
-set
-  borrowed_at = "2024-08-10 20:13:54"
-where
-  id = 11;
-
+-- UPDATE borrowings set borrowed_at = "2024-08-10 20:13:54" where id = 11;
 INSERT INTO
   books (
     title,
