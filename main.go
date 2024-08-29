@@ -28,8 +28,8 @@ func main() {
 	e.POST("/", handler.PingMe(db, logger))
 	e.POST("/login", handler.Login(db, logger))
 	e.POST("/register", handler.Register(db, logger))
-	e.POST("topup/callback", handler.TopUpCallback(db, logger))
-
+	e.POST("/topup/callback", handler.TopUpCallback(db, logger))
+	e.GET("/books", handler.GetAllBooks(db, logger))
 	// Apply JWT middleware to the protected route
 	e.GET("/protected", handler.ProtectedEndpoint, middlewares.JWT(logger))
 
@@ -37,6 +37,8 @@ func main() {
 	user.Use(middlewares.JWT(logger))
 
 	user.POST("/topup", handler.TopUp(db, logger))
+	user.POST("/book/borrow", handler.BorrowBook(db, logger))
+	user.POST("/book/return", handler.ReturnBook(db, logger))
 	var port string
 	if config.PORT == "" {
 		port = fmt.Sprintf(":%s", config.PORT)

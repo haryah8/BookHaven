@@ -23,6 +23,14 @@ func TopUp(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request"})
 		}
+		user := c.Get("user")
+
+		claims, ok := user.(*models.Claims) // Using type assertion
+		if !ok {
+			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid user claims"})
+		}
+		fmt.Println(claims.UserId)
+		fmt.Println(claims.Email)
 
 		invoiceURL := "https://api.xendit.co/v2/invoices"
 		xenditAPIKey := config.XENDIT_SECRET_KEY
@@ -91,14 +99,7 @@ func TopUp(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 			InvoiceURL: response["invoice_url"].(string),
 			ExpiryDate: response["expiry_date"].(string),
 		}
-		user := c.Get("user")
 
-		claims, ok := user.(*models.Claims) // Using type assertion
-		if !ok {
-			return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid user claims"})
-		}
-		fmt.Println(claims.UserId)
-		fmt.Println(claims.Email)
 		// Insert user into database
 		_, err = db.Exec(`INSERT INTO transactions (user_id, amount, transaction_id, description) VALUES (?, ?, ?, ?)`,
 			claims.UserId, invoiceReqBody.Amount, invoiceReqBody.ExternalID, "TopUp Balance")

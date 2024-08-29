@@ -20,3 +20,19 @@ type ErrorResponseDto struct {
 	Error   string `json:"error"`
 	Message string `json:"message"`
 }
+
+type BookDto struct {
+	Title           string `json:"title"`
+	Author          string `json:"author"`
+	PublishedYear   int    `json:"published_year"`
+	ISBN            string `json:"isbn"`
+	AvailableCopies int    `json:"available_copies"`
+}
+
+type BorrowBookDto struct {
+	ISBN string `json:"isbn"`
+}
+
+type ReturnBookDto struct {
+	ISBN string `json:"isbn"`
+}
