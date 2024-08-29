@@ -9,6 +9,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// GetAllBooks retrieves a list of all books from the database.
+// @Summary Get All Books
+// @Description Retrieves details of all books including title, author, published year, ISBN, and available copies.
+// @Tags Books
+// @Produce json
+// @Success 200 {array} models.BookDto
+// @Failure 500 {object} models.ErrorResponse
+// @Router /books
 func GetAllBooks(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		rows, err := db.Query("SELECT title, author, published_year, isbn, available_copies FROM books")

@@ -9,6 +9,19 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// BorrowBook handles the borrowing of a book by an authenticated user.
+// @Summary Borrow a Book
+// @Description Allows an authenticated user to borrow a book. The user must have a balance of at least 50,000 and cannot exceed the borrowing limit of 3 books. Handles errors such as insufficient balance, exceeding borrowing limit, or book availability issues.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param body body models.BorrowBookDto true "Borrow Book Request"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 403 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /user/book/borrow [post]
 func BorrowBook(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// Bind request payload

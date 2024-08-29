@@ -9,6 +9,9 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
+
+	_ "BookHaven/docs"
 
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -25,6 +28,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middlewares.PrintRequestResponse(logger))
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/", handler.PingMe(db, logger))
 	e.POST("/login", handler.Login(db, logger))
 	e.POST("/register", handler.Register(db, logger))

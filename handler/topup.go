@@ -17,6 +17,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// TopUp handles the top-up of a user's account balance by generating an invoice through Xendit.
+// @Summary Top Up User Account
+// @Description Generates an invoice for top-up using Xendit. The user must be authenticated, and the API request includes the amount to top up. The function handles errors, processes the Xendit response, and updates the transaction history in the database.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param topUpRequest body models.TopUpRequestDto true "Top Up Request Data"
+// @Success 200 {object} models.TopUpResponseXenditDto
+// @Failure 400 {object} models.TopUpErrorResponseXenditDto
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /user/topup [post]
 func TopUp(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var request models.TopUpRequestDto

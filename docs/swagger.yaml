@@ -1,0 +1,361 @@
+definitions:
+  models.BookDto:
+    properties:
+      author:
+        type: string
+      available_copies:
+        type: integer
+      isbn:
+        type: string
+      published_year:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.BorrowBookDto:
+    properties:
+      isbn:
+        type: string
+    type: object
+  models.BorrowedBookResponse:
+    properties:
+      author:
+        type: string
+      borrowed_at:
+        type: string
+      isbn:
+        type: string
+      title:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  models.LoginDto:
+    properties:
+      email:
+        description: User email address
+        type: string
+      password:
+        type: string
+    type: object
+  models.RegisterDto:
+    properties:
+      email:
+        description: User email address
+        type: string
+      name:
+        description: User's full name
+        type: string
+      password:
+        description: User Password
+        type: string
+    type: object
+  models.ReturnBookDto:
+    properties:
+      isbn:
+        type: string
+    type: object
+  models.TopUpErrorResponseXenditDto:
+    properties:
+      error_code:
+        type: string
+      error_message:
+        type: string
+    type: object
+  models.TopUpRequestDto:
+    properties:
+      amount:
+        type: integer
+    type: object
+  models.TopUpResponseXenditDto:
+    properties:
+      amount:
+        type: string
+      expiry_date:
+        type: string
+      invoice_url:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /book:
+    get:
+      description: Retrieves details of all books including title, author, published
+        year, ISBN, and available copies.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.BookDto'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get All Books
+      tags:
+      - Books
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user and return a JWT token
+      parameters:
+      - description: User Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: User Login
+      tags:
+      - Login Register
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email, password, and name
+      parameters:
+      - description: User Registration
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
+      tags:
+      - User
+  /user/balance:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the balance of the user from the database. The user must
+        be authenticated, and the function handles errors such as user not found or
+        database errors.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get User Balance
+      tags:
+      - User
+  /user/book/borrow:
+    post:
+      consumes:
+      - application/json
+      description: Allows an authenticated user to borrow a book. The user must have
+        a balance of at least 50,000 and cannot exceed the borrowing limit of 3 books.
+        Handles errors such as insufficient balance, exceeding borrowing limit, or
+        book availability issues.
+      parameters:
+      - description: Borrow Book Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.BorrowBookDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Borrow a Book
+      tags:
+      - Books
+  /user/book/check:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the list of books that the user is currently borrowing.
+        The user must be authenticated. Handles errors such as database errors and
+        user authentication issues.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.BorrowedBookResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get Borrowed Books
+      tags:
+      - Books
+  /user/book/return:
+    post:
+      consumes:
+      - application/json
+      description: Returns a borrowed book and calculates any late fees. If the book
+        is returned after the allowed period, the user will be charged a late fee.
+        The user must have sufficient balance to cover the late fee.
+      parameters:
+      - description: Return Book Data
+        in: body
+        name: returnBookDto
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReturnBookDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Return a borrowed book
+      tags:
+      - User
+  /user/topup:
+    post:
+      consumes:
+      - application/json
+      description: Generates an invoice for top-up using Xendit. The user must be
+        authenticated, and the API request includes the amount to top up. The function
+        handles errors, processes the Xendit response, and updates the transaction
+        history in the database.
+      parameters:
+      - description: Top Up Request Data
+        in: body
+        name: topUpRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.TopUpRequestDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TopUpResponseXenditDto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.TopUpErrorResponseXenditDto'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Top Up User Account
+      tags:
+      - User
+swagger: "2.0"

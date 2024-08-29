@@ -9,6 +9,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// GetUserBalance retrieves the balance of the authenticated user.
+// @Summary Get User Balance
+// @Description Retrieves the balance of the user from the database. The user must be authenticated, and the function handles errors such as user not found or database errors.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]int
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 404 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /user/balance [get]
 func GetUserBalance(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// Get user claims from context

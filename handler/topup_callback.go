@@ -38,7 +38,7 @@ func TopUpCallback(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 		var updateStatus = "pending"
 		if request.Status == "PAID" || request.Status == "COMPLETED" {
 			updateStatus = "completed"
-		} else if request.Status == "FAILED" {
+		} else if request.Status == "FAILED" || request.Status == "EXPIRED" {
 			updateStatus = "failed"
 		}
 

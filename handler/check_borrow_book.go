@@ -10,6 +10,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// GetBorrowedBooks retrieves the list of books currently borrowed by the authenticated user.
+// @Summary Get Borrowed Books
+// @Description Retrieves the list of books that the user is currently borrowing. The user must be authenticated. Handles errors such as database errors and user authentication issues.
+// @Tags Books
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.BorrowedBookResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /user/book/check [get]
 func GetBorrowedBooks(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// Get user claims from context

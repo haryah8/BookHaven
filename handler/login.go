@@ -4,7 +4,6 @@ import (
 	"BookHaven/models"
 	"BookHaven/utils" // Utility package for password hashing and JWT
 	"database/sql"
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,6 +11,17 @@ import (
 )
 
 // Login handles user login
+// @Summary User Login
+// @Description Login a user and return a JWT token
+// @Tags Login Register
+// @Accept json
+// @Produce json
+// @Param login body models.LoginDto true "User Login"
+// @Success 200 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /login [post]
 func Login(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var req models.LoginDto // Assuming you have a User model
@@ -41,19 +51,14 @@ func Login(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 				"message": "Failed to authenticate user",
 			})
 		}
-
-		fmt.Println(storedPasswordHash) // DEBUGGING --------------------------------------------
-		fmt.Println(req.Password)       // DEBUGGING --------------------------------------------
 		// Check password
 		if utils.CheckPasswordHash(storedPasswordHash, req.Password) {
-			fmt.Printf("%s, %s, %s", storedPasswordHash, req.Password, err) // DEBUGGING --------------------------------------------
 			return c.JSON(http.StatusUnauthorized, map[string]string{
 				"status":  "Error",
 				"message": "Invalid credentials",
 			})
 		}
 
-		fmt.Println(userId) // DEBUGGING --------------------------------------------
 		// Generate JWT token
 		token, err := utils.GenerateToken(req.Email, userId)
 		if err != nil {

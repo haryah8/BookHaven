@@ -11,6 +11,17 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Register godoc
+// @Summary Register a new user
+// @Description Register a new user with email, password, and name
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param user body models.RegisterDto true "User Registration"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /register [post]
 func Register(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var req models.RegisterDto // Assuming you have a User model

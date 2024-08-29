@@ -17,6 +17,19 @@ const (
 	MaxDaysWithoutFee = 5
 )
 
+// ReturnBook handles the return of a borrowed book and calculates any applicable late fees.
+// @Summary Return a borrowed book
+// @Description Returns a borrowed book and calculates any late fees. If the book is returned after the allowed period, the user will be charged a late fee. The user must have sufficient balance to cover the late fee.
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param returnBookDto body models.ReturnBookDto true "Return Book Data"
+// @Success 200 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse
+// @Failure 401 {object} models.ErrorResponse
+// @Failure 403 {object} models.ErrorResponse
+// @Failure 500 {object} models.ErrorResponse
+// @Router /user/book/return [post]
 func ReturnBook(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// Bind request payload (ISBN only)
