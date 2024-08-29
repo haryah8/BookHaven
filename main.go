@@ -25,7 +25,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middlewares.PrintRequestResponse(logger))
 
-	e.POST("/", handler.PingMe(db, logger))
+	e.GET("/", handler.PingMe(db, logger))
 	e.POST("/login", handler.Login(db, logger))
 	e.POST("/register", handler.Register(db, logger))
 	e.POST("/topup/callback", handler.TopUpCallback(db, logger))
