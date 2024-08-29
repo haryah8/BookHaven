@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // User represents a user in the system
 type RegisterDto struct {
 	Email    string `json:"email"`    // User email address
@@ -35,4 +37,11 @@ type BorrowBookDto struct {
 
 type ReturnBookDto struct {
 	ISBN string `json:"isbn"`
+}
+
+type BorrowedBookResponse struct {
+	Title      string    `json:"title"`
+	Author     string    `json:"author"`
+	ISBN       string    `json:"isbn"`
+	BorrowedAt time.Time `json:"borrowed_at"`
 }

@@ -39,6 +39,7 @@ func main() {
 	user.POST("/topup", handler.TopUp(db, logger))
 	user.POST("/book/borrow", handler.BorrowBook(db, logger))
 	user.POST("/book/return", handler.ReturnBook(db, logger))
+	user.GET("/book/check", handler.GetBorrowedBooks(db, logger))
 	var port string
 	if config.PORT == "" {
 		port = fmt.Sprintf(":%s", config.PORT)

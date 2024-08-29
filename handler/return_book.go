@@ -37,10 +37,7 @@ func ReturnBook(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 		var borrowedAtStr string // Store as string
 
 		err := db.QueryRow(`
-			SELECT b.id, br.id, br.borrowed_at 
-			FROM borrowings br 
-			JOIN books b ON br.book_id = b.id 
-			WHERE b.isbn = ? AND br.user_id = ? AND br.status = 'borrowed'`,
+			SELECT b.id, br.id, br.borrowed_at 			FROM borrowings br			JOIN books b ON br.book_id = b.id 			WHERE b.isbn = ? AND br.user_id = ? AND br.status = 'borrowed'`,
 			request.ISBN, claims.UserId).Scan(&bookId, &borrowingID, &borrowedAtStr)
 		if err != nil {
 			if err == sql.ErrNoRows {
