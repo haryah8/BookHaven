@@ -44,7 +44,7 @@ func main() {
 
 	port := fmt.Sprintf(":%s", config.PORT)
 	if port == "" || port == ":" {
-		port = ":9000"
+		port = ":8085"
 	}
 	// Start server
 	e.Start(port)
