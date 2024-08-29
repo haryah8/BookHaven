@@ -1,1 +1,1 @@
-web: p2w4lp
+web: ./bin/p2w4lp
