@@ -1,15 +1,15 @@
 -- Buat Heroku APPS di website
 -- tambahkan procfile
 -- pakai "PORT" untuk nama variable
-heroku git:remote -a p2w4lp
+heroku git:remote -a bookhaven
 git remote -v
-heroku config:set GO111MODULE=on -a p2w4lp
-heroku config:set PORT=8085 -a p2w4lp
+heroku config:set GO111MODULE=on -a bookhaven
+heroku config:set PORT=8085 -a bookhaven
 git add *
 git commit -am "config heroku"
 git push -u origin main
 git push heroku main
-heroku apps:info -a p2w4lp
-heroku open -a p2w4lp
-heroku logs --tail -a p2w4lp
+heroku apps:info -a bookhaven
+heroku open -a bookhaven
+heroku logs --tail -a bookhaven
 
