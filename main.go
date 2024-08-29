@@ -36,6 +36,7 @@ func main() {
 	user := e.Group("/user")
 	user.Use(middlewares.JWT(logger))
 
+	user.GET("/balance", handler.GetUserBalance(db, logger))
 	user.POST("/topup", handler.TopUp(db, logger))
 	user.POST("/book/borrow", handler.BorrowBook(db, logger))
 	user.POST("/book/return", handler.ReturnBook(db, logger))

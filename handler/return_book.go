@@ -3,6 +3,7 @@ package handler
 import (
 	"BookHaven/models"
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -37,7 +38,10 @@ func ReturnBook(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 		var borrowedAtStr string // Store as string
 
 		err := db.QueryRow(`
-			SELECT b.id, br.id, br.borrowed_at 			FROM borrowings br			JOIN books b ON br.book_id = b.id 			WHERE b.isbn = ? AND br.user_id = ? AND br.status = 'borrowed'`,
+			SELECT b.id, br.id, br.borrowed_at 
+			FROM borrowings br 
+			JOIN books b ON br.book_id = b.id 
+			WHERE b.isbn = ? AND br.user_id = ? AND br.status = 'borrowed'`,
 			request.ISBN, claims.UserId).Scan(&bookId, &borrowingID, &borrowedAtStr)
 		if err != nil {
 			if err == sql.ErrNoRows {
@@ -99,7 +103,12 @@ func ReturnBook(db *sql.DB, logger *logrus.Logger) echo.HandlerFunc {
 			logger.Error("Error updating book availability: ", err)
 			return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Error updating book availability"})
 		}
+		if lateFee > 0 {
+			return c.JSON(http.StatusOK, map[string]string{"message": fmt.Sprintf("Book returned successfully with additional late fee %d", lateFee)})
 
-		return c.JSON(http.StatusOK, map[string]string{"message": "Book returned successfully"})
+		} else {
+			return c.JSON(http.StatusOK, map[string]string{"message": "Book returned successfully"})
+
+		}
 	}
 }

@@ -1,2 +1,4 @@
 .env
+online.env
+local.env
 secret_api_key.csv
