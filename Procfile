@@ -1,1 +1,1 @@
-web: ./bin/bookhaven
+web: ./bin/p2gc1
